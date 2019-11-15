@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 import mysql.connector
 import telebot
 from telebot import apihelper
