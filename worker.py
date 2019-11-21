@@ -9,7 +9,7 @@ import constants
 import dbworker
 
 token = '772417845:AAG-n9TZ916OZFnIGIhlNxQtM1HEYcri2iw'
-apihelper.proxy = {'https': 'https://feonavinogradova:divopasy@165.22.254.99:3128'}
+apihelper.proxy = {'https': 'https://korben7dallas:dokepasy@176.103.49.11:8080'}
 bot = telebot.TeleBot(token)
 conn = mysql.connector.connect(host=constants.DB_HOST,
                                user=constants.DB_USER,
@@ -35,6 +35,12 @@ def reset_markup():
     markup.add(itembtn)
     return markup
 
+def inline_markup():
+    markup = types.InlineKeyboardMarkup()
+    btn1 = types.InlineKeyboardButton(text=constants.deal_msg, url="t.me/modelways_bot")
+    markup.add(btn1)
+    return markup
+
 
 mk = types.ReplyKeyboardRemove()
 
@@ -55,7 +61,7 @@ def start_msg(message):
 @bot.message_handler(func=lambda message: message.chat.type == 'private' and message.text == constants.returned)
 def reset_msg(message):
     dbworker.set_state(message.chat.id, config.States.S_START.value)
-    bot.send_message(message.chat.id, "Основное окно", reply_markup=start_markup())
+    bot.send_message(message.chat.id, "Главное меню", reply_markup=start_markup())
 
 
 def getStrFailDeal(telegram_id):
@@ -128,7 +134,7 @@ def balance_msg(message):
 @bot.message_handler(func=lambda message: message.chat.type == 'private' and message.text == constants.faq)
 def faq_msg(message):
     print("FAQ Button")
-    bot.send_message(message.chat.id, "/start - Начало")
+    bot.send_message(message.chat.id, "/start - В начало.")
 
 
 def get_admin_ids(bot, chat_id):
@@ -202,6 +208,7 @@ def check_message(message):
         print("Admin send message!")
     else:
         bot.delete_message(chat_id=message.chat.id, message_id=message.message_id)
+        bot.send_message(message.chat.id, "Сообщение", reply_markup=inline_markup())
 
 
 @bot.message_handler(content_types=['new_chat_members'])
